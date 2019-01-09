@@ -17,20 +17,18 @@ import retrofit2.Response
  * A broadcast receiver who listens for incoming SMS
  */
 
-class SmsBroadcastReceiver(context: GatewayApplication) : BroadcastReceiver() {
+class SmsBroadcastReceiver(context: GatewayApplication? = null) : BroadcastReceiver() {
 
-    private val mApiService: ApiService = RetrofitClient.getInstance(context).retrofit.create(ApiService::class.java)
+    private val mApiService: ApiService = RetrofitClient.getInstance(context!!).retrofit.create(ApiService::class.java)
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
             var smsBody = ""
-            var senderNumber = ""
+            val senderNumber: String = Telephony.Sms.Intents.getMessagesFromIntent(intent)[0].displayOriginatingAddress
 
             for (smsMessage in Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
                 smsBody += smsMessage.messageBody
             }
-
-            senderNumber = Telephony.Sms.Intents.getMessagesFromIntent(intent)[0].displayOriginatingAddress
 
             mApiService.createEmployee(Employee(senderNumber, smsBody, "19"))
                 .enqueue(object : Callback<ResponseBody> {
