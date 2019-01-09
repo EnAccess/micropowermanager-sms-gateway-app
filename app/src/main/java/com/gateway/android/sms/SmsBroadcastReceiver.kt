@@ -23,12 +23,15 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
             var smsBody = ""
+            var senderNumber = ""
 
             for (smsMessage in Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
                 smsBody += smsMessage.messageBody
             }
 
-            mApiService.createEmployee(Employee("Aydin Mehmet Ozkan", "123456", "19"))
+            senderNumber = Telephony.Sms.Intents.getMessagesFromIntent(intent)[0].displayOriginatingAddress
+
+            mApiService.createEmployee(Employee(senderNumber, smsBody, "19"))
                 .enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     }

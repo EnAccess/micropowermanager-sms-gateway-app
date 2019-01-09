@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar?.hide()
 
         if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.SEND_SMS
