@@ -1,6 +1,7 @@
 package com.gateway.android.network.http
 
-import com.gateway.android.BuildConfig
+import com.gateway.android.GatewayApplication
+import com.gateway.android.utils.SharedPreferencesWrapper
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,7 +15,7 @@ class RetrofitClient
 /**
  * Retrofit Connection Builder
  */
-private constructor() {
+private constructor(context: GatewayApplication) {
     /**
      * Returns Retrofit instance
      *
@@ -34,7 +35,7 @@ private constructor() {
 
         retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(SharedPreferencesWrapper(context).baseUrl!!)
             .client(client)
             .build()
     }
@@ -44,11 +45,15 @@ private constructor() {
         private const val DEFAULT_CONNECT_TIMEOUT: Long = 30000
         private const val DEFAULT_READ_TIMEOUT: Long = 30000
 
-        /**
-         * Returns Our RetrofitClient instance
-         *
-         * @return Our RetrofitClient instance
-         */
-        val instance = RetrofitClient()
+        @Volatile
+        private var instance: RetrofitClient? = null
+
+        fun getInstance(context: GatewayApplication): RetrofitClient =
+            instance ?: synchronized(this) {
+                instance ?: buildRetrofitClient(context).also { instance = it }
+            }
+
+        private fun buildRetrofitClient(context: GatewayApplication) =
+            RetrofitClient(context)
     }
 }

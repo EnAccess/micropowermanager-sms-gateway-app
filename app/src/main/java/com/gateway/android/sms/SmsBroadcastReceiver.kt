@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.provider.Telephony
+import com.gateway.android.GatewayApplication
 import com.gateway.android.network.http.RetrofitClient
 import com.gateway.android.network.model.Employee
 import com.gateway.android.network.service.ApiService
@@ -16,9 +17,9 @@ import retrofit2.Response
  * A broadcast receiver who listens for incoming SMS
  */
 
-class SmsBroadcastReceiver : BroadcastReceiver() {
+class SmsBroadcastReceiver(context: GatewayApplication) : BroadcastReceiver() {
 
-    private val mApiService: ApiService = RetrofitClient.instance.retrofit.create(ApiService::class.java)
+    private val mApiService: ApiService = RetrofitClient.getInstance(context).retrofit.create(ApiService::class.java)
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
