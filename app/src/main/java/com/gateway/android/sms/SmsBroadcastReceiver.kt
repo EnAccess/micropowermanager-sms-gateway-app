@@ -3,9 +3,14 @@ package com.gateway.android.sms
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.provider.Telephony
-import android.telephony.SmsMessage
+import com.gateway.android.network.http.RetrofitClient
+import com.gateway.android.network.model.Employee
+import com.gateway.android.network.service.ApiService
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * A broadcast receiver who listens for incoming SMS
@@ -13,41 +18,24 @@ import android.telephony.SmsMessage
 
 class SmsBroadcastReceiver : BroadcastReceiver() {
 
-    private var listener: Listener? = null
+    private val mApiService: ApiService = RetrofitClient.instance.retrofit.create(ApiService::class.java)
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
             var smsBody = ""
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                for (smsMessage in Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
-                    smsBody += smsMessage.messageBody
-                }
-            } else {
-                val smsBundle = intent.extras
-                if (smsBundle != null) {
-                    val pdus = smsBundle.get("pdus") as Array<*>
+            for (smsMessage in Telephony.Sms.Intents.getMessagesFromIntent(intent)) {
+                smsBody += smsMessage.messageBody
+            }
 
-                    val messages = arrayOfNulls<SmsMessage>(pdus.size)
-
-                    for (i in messages.indices) {
-                        messages[i] = SmsMessage.createFromPdu(pdus[i] as ByteArray)
-                        smsBody += messages[i]!!.messageBody
+            mApiService.createEmployee(Employee("Aydin Mehmet Ozkan", "123456", "19"))
+                .enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     }
-                }
-            }
 
-            if (listener != null) {
-                listener!!.onTextReceived(smsBody)
-            }
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    }
+                })
         }
-    }
-
-    internal fun setListener(listener: Listener) {
-        this.listener = listener
-    }
-
-    internal interface Listener {
-        fun onTextReceived(text: String)
     }
 }

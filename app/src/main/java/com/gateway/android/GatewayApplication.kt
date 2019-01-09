@@ -1,8 +1,6 @@
 package com.gateway.android
 
 import android.app.Application
-import android.content.IntentFilter
-import android.provider.Telephony
 import com.gateway.android.sms.SmsBroadcastReceiver
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -18,14 +16,5 @@ class GatewayApplication : Application() {
         } else {
             FirebaseMessaging.getInstance().subscribeToTopic("gateway")
         }
-
-        smsBroadcastReceiver = SmsBroadcastReceiver()
-        registerReceiver(smsBroadcastReceiver, IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION))
-
-        smsBroadcastReceiver!!.setListener(object : SmsBroadcastReceiver.Listener {
-            override fun onTextReceived(text: String) {
-                //TODO Api Service Call
-            }
-        })
     }
 }
