@@ -1,6 +1,6 @@
 package com.gateway.android.network.http
 
-import com.gateway.android.GatewayApplication
+import android.content.Context
 import com.gateway.android.utils.SharedPreferencesWrapper
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,7 +15,7 @@ class RetrofitClient
 /**
  * Retrofit Connection Builder
  */
-private constructor(context: GatewayApplication) {
+private constructor(context: Context) {
     /**
      * Returns Retrofit instance
      *
@@ -48,12 +48,12 @@ private constructor(context: GatewayApplication) {
         @Volatile
         private var instance: RetrofitClient? = null
 
-        fun getInstance(context: GatewayApplication): RetrofitClient =
+        fun getInstance(context: Context): RetrofitClient =
             instance ?: synchronized(this) {
                 instance ?: buildRetrofitClient(context).also { instance = it }
             }
 
-        private fun buildRetrofitClient(context: GatewayApplication) =
+        private fun buildRetrofitClient(context: Context) =
             RetrofitClient(context)
     }
 }

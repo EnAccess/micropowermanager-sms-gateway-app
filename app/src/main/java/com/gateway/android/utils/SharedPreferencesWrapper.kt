@@ -2,13 +2,12 @@ package com.gateway.android.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.gateway.android.GatewayApplication
 
 /**
  * Keeps a reference to the SharedPreference
  * Acts as a Singleton class
  */
-class SharedPreferencesWrapper(context: GatewayApplication) {
+class SharedPreferencesWrapper(context: Context) {
 
     private var mSharedPreferences: SharedPreferences? =
         context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
