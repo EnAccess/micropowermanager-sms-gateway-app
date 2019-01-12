@@ -1,15 +1,19 @@
 package com.gateway.android
 
 import android.app.Application
+import com.crashlytics.android.Crashlytics
 import com.gateway.android.utils.SharedPreferencesWrapper
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import io.fabric.sdk.android.Fabric
 
 class GatewayApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        Fabric.with(this, Crashlytics())
 
         if (BuildConfig.DEBUG) {
             FirebaseMessaging.getInstance().subscribeToTopic("gateway-debug")
