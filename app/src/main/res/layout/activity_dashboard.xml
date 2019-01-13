@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:background="#DDDDDD"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        tools:context=".ui.DashboardActivity">
+
+    <android.support.v7.widget.CardView
+            android:id="@+id/cvApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            app:cardElevation="2dp">
+
+        <ImageView
+                android:id="@+id/ivNetworkState"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:src="@drawable/network_active"
+                android:layout_marginEnd="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_height="wrap_content"/>
+
+        <ImageView
+                android:id="@+id/ivSimState"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:src="@drawable/sim_active"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="6dp"
+                android:layout_height="wrap_content"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:clipToPadding="false"
+                android:orientation="vertical">
+
+            <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@mipmap/ic_launcher"
+                    tools:ignore="ContentDescription"/>
+
+            <TextView
+                    android:id="@+id/tvAppTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="21.3dp"
+                    android:gravity="center"
+                    android:text="@string/app_name"
+                    android:textColor="#333333"
+                    android:textSize="18sp"/>
+
+            <TextView
+                    android:id="@+id/tvAppInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="7.7dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center"
+                    android:textColor="#333333"
+                    android:textSize="14sp"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+        <android.support.v7.widget.CardView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="2dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                android:layout_height="200dp">
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clipToPadding="false"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:id="@+id/tvSentMessageCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="23dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textColor="#333333"
+                        android:textSize="24sp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="7.7dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginBottom="15dp"
+                        android:gravity="center"
+                        android:paddingBottom="10dp"
+                        android:text="@string/message_sent"
+                        android:textColor="#333333"
+                        android:textSize="16sp"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:focusable="true"
+                android:layout_marginStart="8dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                app:cardCornerRadius="12dp"
+                android:layout_marginBottom="2dp"
+                app:cardElevation="2dp"
+                android:layout_height="200dp">
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clipToPadding="false"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:id="@+id/tvReceivedMessageCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="23dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textColor="#333333"
+                        android:textSize="24sp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="7.7dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginBottom="15dp"
+                        android:gravity="center"
+                        android:paddingBottom="10dp"
+                        android:text="@string/message_received"
+                        android:textColor="#333333"
+                        android:textSize="16sp"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+            android:id="@+id/cvContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:layout_marginTop="14dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:clipToPadding="false"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/tvContactTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="23dp"
+                    android:gravity="center"
+                    android:text="@string/contact"
+                    android:textColor="#333333"
+                    android:textSize="18sp"/>
+
+            <TextView
+                    android:id="@+id/tvContactDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="7.7dp"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:text="@string/contact_detail"
+                    android:textColor="#333333"
+                    android:textSize="14sp"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

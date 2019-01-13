@@ -1,6 +1,5 @@
 package com.gateway.android.network.http
 
-import android.content.Context
 import com.gateway.android.utils.SharedPreferencesWrapper
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,7 +14,7 @@ class RetrofitClient
 /**
  * Retrofit Connection Builder
  */
-private constructor(context: Context) {
+private constructor() {
     /**
      * Returns Retrofit instance
      *
@@ -35,7 +34,7 @@ private constructor(context: Context) {
 
         retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(SharedPreferencesWrapper(context).baseUrl!!)
+            .baseUrl(SharedPreferencesWrapper.getInstance().baseUrl!!)
             .client(client)
             .build()
     }
@@ -48,12 +47,12 @@ private constructor(context: Context) {
         @Volatile
         private var instance: RetrofitClient? = null
 
-        fun getInstance(context: Context): RetrofitClient =
+        fun getInstance(): RetrofitClient =
             instance ?: synchronized(this) {
-                instance ?: buildRetrofitClient(context).also { instance = it }
+                instance ?: buildRetrofitClient().also { instance = it }
             }
 
-        private fun buildRetrofitClient(context: Context) =
-            RetrofitClient(context)
+        private fun buildRetrofitClient() =
+            RetrofitClient()
     }
 }

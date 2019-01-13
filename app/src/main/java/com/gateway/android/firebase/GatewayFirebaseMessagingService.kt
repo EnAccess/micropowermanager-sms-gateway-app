@@ -1,7 +1,8 @@
 package com.gateway.android.firebase
 
 import android.telephony.SmsManager
-import android.util.Log
+import android.telephony.TelephonyManager
+import com.gateway.android.utils.SharedPreferencesWrapper
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -28,15 +29,20 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
                 ""
             }
 
-        if (number!!.isNotEmpty() && message!!.isNotEmpty()) {
+        if (number!!.isNotEmpty() && message!!.isNotEmpty() && SharedPreferencesWrapper.getInstance().simState == TelephonyManager.SIM_STATE_READY) {
             SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
+
+            SharedPreferencesWrapper.getInstance()
+                .sentMessageCount = SharedPreferencesWrapper.getInstance().sentMessageCount!! + 1
+        } else {
+            //TODO Trigger Failed Api Service
         }
     }
 
     override fun onNewToken(p0: String?) {
         super.onNewToken(p0)
 
-        Log.d("GatewayFirebaseService", "Refreshed token: " + p0!!)
+        SharedPreferencesWrapper.getInstance().deviceToken = p0
     }
 
     companion object {

@@ -1,4 +1,4 @@
-package com.gateway.android.sms
+package com.gateway.android.broadcast
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,6 +7,7 @@ import android.provider.Telephony
 import com.gateway.android.network.http.RetrofitClient
 import com.gateway.android.network.model.Employee
 import com.gateway.android.network.service.ApiService
+import com.gateway.android.utils.SharedPreferencesWrapper
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,13 +31,15 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
             }
 
             if (mApiService == null) {
-                mApiService = RetrofitClient.getInstance(context)
+                mApiService = RetrofitClient.getInstance()
                     .retrofit.create(ApiService::class.java)
             }
 
             mApiService!!.createEmployee(Employee(senderNumber, smsBody, "19"))
                 .enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        SharedPreferencesWrapper.getInstance()
+                            .receivedMessageCount = SharedPreferencesWrapper.getInstance().receivedMessageCount!! + 1
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
