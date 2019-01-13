@@ -1,11 +1,7 @@
 package com.gateway.android.firebase
 
-import android.net.Uri
-import android.os.Handler
-import android.os.Looper
 import android.telephony.SmsManager
 import android.telephony.TelephonyManager
-import android.util.Log
 import com.gateway.android.utils.SharedPreferencesWrapper
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -41,32 +37,14 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
             }
 
         if (number!!.isNotEmpty() && message!!.isNotEmpty() && SharedPreferencesWrapper.getInstance().simState == TelephonyManager.SIM_STATE_READY) {
-            SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
+            try {
+                SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
 
-            var lastMessageNumber = ""
-            var lastMessageBody = ""
-
-            val handler = Handler(Looper.getMainLooper())
-
-            handler.postDelayed({
-                val cursor = contentResolver.query(Uri.parse("content://sms/inbox"), null, null, null, null)
-
-                if (cursor != null && cursor.moveToFirst()) {
-                    lastMessageNumber = cursor.getString(cursor.getColumnIndexOrThrow("address"))
-                    lastMessageBody = cursor.getString(cursor.getColumnIndexOrThrow("body"))
-
-                    cursor.close()
-                }
-
-                if (lastMessageNumber == number && lastMessageBody == message) {
-                    //TODO Trigger SmsSent Api Service
-
-                    SharedPreferencesWrapper.getInstance()
-                        .sentMessageCount = SharedPreferencesWrapper.getInstance().sentMessageCount!! + 1
-                } else {
-                    Log.d("Message Information", "$lastMessageNumber $lastMessageBody")
-                }
-            }, 2000)
+                SharedPreferencesWrapper.getInstance()
+                    .sentMessageCount = SharedPreferencesWrapper.getInstance().sentMessageCount!! + 1
+            } catch (e: Exception) {
+                //TODO Trigger FailedToSentSms Api Service
+            }
         } else {
             //TODO Trigger FailedToSentSms Api Service
         }
