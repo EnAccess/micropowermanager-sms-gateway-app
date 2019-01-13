@@ -1,7 +1,11 @@
 package com.gateway.android.firebase
 
+import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.telephony.SmsManager
 import android.telephony.TelephonyManager
+import android.util.Log
 import com.gateway.android.utils.SharedPreferencesWrapper
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -29,13 +33,42 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
                 ""
             }
 
+        val id =
+            if (remoteMessage != null && remoteMessage.data != null && remoteMessage.data[KEY_NOTIFICATION_EXTRA_ID] != null) {
+                remoteMessage.data[KEY_NOTIFICATION_EXTRA_ID]
+            } else {
+                ""
+            }
+
         if (number!!.isNotEmpty() && message!!.isNotEmpty() && SharedPreferencesWrapper.getInstance().simState == TelephonyManager.SIM_STATE_READY) {
             SmsManager.getDefault().sendTextMessage(number, null, message, null, null)
 
-            SharedPreferencesWrapper.getInstance()
-                .sentMessageCount = SharedPreferencesWrapper.getInstance().sentMessageCount!! + 1
+            var lastMessageNumber = ""
+            var lastMessageBody = ""
+
+            val handler = Handler(Looper.getMainLooper())
+
+            handler.postDelayed({
+                val cursor = contentResolver.query(Uri.parse("content://sms/inbox"), null, null, null, null)
+
+                if (cursor != null && cursor.moveToFirst()) {
+                    lastMessageNumber = cursor.getString(cursor.getColumnIndexOrThrow("address"))
+                    lastMessageBody = cursor.getString(cursor.getColumnIndexOrThrow("body"))
+
+                    cursor.close()
+                }
+
+                if (lastMessageNumber == number && lastMessageBody == message) {
+                    //TODO Trigger SmsSent Api Service
+
+                    SharedPreferencesWrapper.getInstance()
+                        .sentMessageCount = SharedPreferencesWrapper.getInstance().sentMessageCount!! + 1
+                } else {
+                    Log.d("Message Information", "$lastMessageNumber $lastMessageBody")
+                }
+            }, 2000)
         } else {
-            //TODO Trigger Failed Api Service
+            //TODO Trigger FailedToSentSms Api Service
         }
     }
 
@@ -48,5 +81,6 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
         private const val KEY_NOTIFICATION_EXTRA_NUMBER = "number"
         private const val KEY_NOTIFICATION_EXTRA_MESSAGE = "message"
+        private const val KEY_NOTIFICATION_EXTRA_ID = "id"
     }
 }
