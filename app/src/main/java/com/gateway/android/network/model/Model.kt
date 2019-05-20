@@ -2,8 +2,4 @@ package com.gateway.android.network.model
 
 import java.io.Serializable
 
-data class Employee(
-    var name: String,
-    var salary: String,
-    var age: String
-) : Serializable
+data class Sms(var sender: String, var message: String) : Serializable

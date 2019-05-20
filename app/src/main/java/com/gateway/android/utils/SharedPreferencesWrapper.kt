@@ -23,7 +23,7 @@ class SharedPreferencesWrapper() {
     }
 
     var baseUrl: String?
-        get() = mSharedPreferences.getString(KEY_BASE_URL, "http://dummy.restapiexample.com/api/v1/")
+        get() = mSharedPreferences.getString(KEY_BASE_URL, "https://micropowermanager.com/api/")
         set(url) {
             mSharedPreferences.edit().putString(KEY_BASE_URL, url).apply()
         }
