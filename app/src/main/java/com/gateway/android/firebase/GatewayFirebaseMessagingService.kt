@@ -12,15 +12,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.app.PendingIntent
 
-
 class GatewayFirebaseMessagingService : FirebaseMessagingService() {
 
-    /**
-     * Called when message is received.
-     *
-     * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
-     */
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
         registerReceiver(object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
@@ -54,21 +48,10 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
             }
         }, IntentFilter(SMS_DELIVERED))
 
-        val number =
-            if (remoteMessage != null && remoteMessage.data != null && remoteMessage.data[KEY_NOTIFICATION_EXTRA_NUMBER] != null) {
-                remoteMessage.data[KEY_NOTIFICATION_EXTRA_NUMBER]
-            } else {
-                ""
-            }
+        val number = remoteMessage.data[KEY_NOTIFICATION_EXTRA_NUMBER]
+        val message = remoteMessage.data[KEY_NOTIFICATION_EXTRA_MESSAGE]
 
-        val message =
-            if (remoteMessage != null && remoteMessage.data != null && remoteMessage.data[KEY_NOTIFICATION_EXTRA_MESSAGE] != null) {
-                remoteMessage.data[KEY_NOTIFICATION_EXTRA_MESSAGE]
-            } else {
-                ""
-            }
-
-        if (number!!.isNotEmpty() && message!!.isNotEmpty() && SharedPreferencesWrapper.getInstance().simState == TelephonyManager.SIM_STATE_READY) {
+        if (SharedPreferencesWrapper.getInstance().simState == TelephonyManager.SIM_STATE_READY) {
             try {
                 val sentIntent = PendingIntent.getBroadcast(this, 0, Intent(SMS_SENT), 0)
                 val deliveryIntent =
@@ -84,7 +67,7 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-    override fun onNewToken(p0: String?) {
+    override fun onNewToken(p0: String) {
         super.onNewToken(p0)
 
         SharedPreferencesWrapper.getInstance().deviceToken = p0
