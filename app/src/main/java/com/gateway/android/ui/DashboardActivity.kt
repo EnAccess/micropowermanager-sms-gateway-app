@@ -3,26 +3,26 @@ package com.gateway.android.ui
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
 import android.telephony.TelephonyManager
 import android.text.Html
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.gateway.android.BuildConfig
+import com.gateway.android.R
 import com.gateway.android.utils.SharedPreferencesWrapper
 import com.gateway.android.utils.Util
 import kotlinx.android.synthetic.main.activity_dashboard.*
-
 
 class DashboardActivity : AppCompatActivity(), SharedPreferencesWrapper.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.gateway.android.R.layout.activity_dashboard)
+        setContentView(R.layout.activity_dashboard)
 
         SharedPreferencesWrapper.getInstance().setListener(this)
-
-        supportActionBar?.hide()
 
         if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.SEND_SMS
@@ -40,13 +40,36 @@ class DashboardActivity : AppCompatActivity(), SharedPreferencesWrapper.Listener
             )
         }
 
-        tvAppInfo.text = getString(com.gateway.android.R.string.app_information, BuildConfig.VERSION_NAME)
+        tvAppInfo.text =
+            getString(R.string.app_information, BuildConfig.VERSION_NAME)
         invalidateDynamicViews()
 
-        tvContactDetail.text = Html.fromHtml(getString(com.gateway.android.R.string.contact_detail))
+        tvContactDetail.text = Html.fromHtml(getString(R.string.contact_detail))
 
         cvContact.setOnClickListener {
             Util.sendEmail(this)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) =
+        when (item.itemId) {
+            R.id.settings -> {
+                showEmailBottomSheet()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+
+    private fun showEmailBottomSheet() {
+        EditTextBottomSheetFragment.newInstance().apply {
+            show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_TAG)
         }
     }
 
@@ -59,23 +82,29 @@ class DashboardActivity : AppCompatActivity(), SharedPreferencesWrapper.Listener
             ivNetworkState.setImageDrawable(
                 if (SharedPreferencesWrapper.getInstance().networkState == 1) ContextCompat.getDrawable(
                     this,
-                    com.gateway.android.R.drawable.network_active
-                ) else ContextCompat.getDrawable(this, com.gateway.android.R.drawable.network_inactive)
+                    R.drawable.network_active
+                ) else ContextCompat.getDrawable(
+                    this,
+                    R.drawable.network_inactive
+                )
             )
 
             ivSimState.setImageDrawable(
                 if (SharedPreferencesWrapper.getInstance().simState == TelephonyManager.SIM_STATE_READY) ContextCompat.getDrawable(
                     this,
-                    com.gateway.android.R.drawable.sim_active
-                ) else ContextCompat.getDrawable(this, com.gateway.android.R.drawable.sim_inactive)
+                    R.drawable.sim_active
+                ) else ContextCompat.getDrawable(this, R.drawable.sim_inactive)
             )
 
-            tvSentMessageCount.text = SharedPreferencesWrapper.getInstance().sentMessageCount.toString()
-            tvReceivedMessageCount.text = SharedPreferencesWrapper.getInstance().receivedMessageCount.toString()
+            tvSentMessageCount.text =
+                SharedPreferencesWrapper.getInstance().sentMessageCount.toString()
+            tvReceivedMessageCount.text =
+                SharedPreferencesWrapper.getInstance().receivedMessageCount.toString()
         }
     }
 
     companion object {
         private const val REQUEST_CODE_SMS_PERMISSION = 1234
+        private const val BOTTOM_SHEET_FRAGMENT_TAG = "BOTTOM_SHEET_FRAGMENT_TAG"
     }
 }

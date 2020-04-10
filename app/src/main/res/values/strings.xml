@@ -8,4 +8,8 @@
     <string name="contact">"Contact Us"</string>
     <string name="contact_detail">If you encounter any issues, or have any suggestions please let us know.
         <![CDATA[<br/><br/><b><u><font color=#512da8>support@codeaven.com</b></u>]]></string>
+    <string name="menu_settings">Settings</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="hint_server_url">Server Url</string>
 </resources>
