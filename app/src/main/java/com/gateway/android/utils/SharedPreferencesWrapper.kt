@@ -23,7 +23,7 @@ class SharedPreferencesWrapper() {
     }
 
     var baseUrl: String?
-        get() = mSharedPreferences.getString(KEY_BASE_URL, "https://micropowermanager.com/api/")
+        get() = mSharedPreferences.getString(KEY_BASE_URL, DEFAULT_BASE_URL)
         set(url) {
             mSharedPreferences.edit().putString(KEY_BASE_URL, url).apply()
         }
@@ -71,6 +71,8 @@ class SharedPreferencesWrapper() {
         }
 
     companion object {
+        const val DEFAULT_BASE_URL = "http://demo.micropowermanager.com/api/"
+
         private const val SHARED_PREFERENCES_NAME = "inensus-gateway"
         private const val KEY_BASE_URL = "baseUrl"
         private const val KEY_DEVICE_TOKEN = "deviceToken"

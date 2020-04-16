@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import android.widget.Toast
 import com.gateway.android.R
 import com.gateway.android.utils.SharedPreferencesWrapper
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -33,6 +34,7 @@ class EditTextBottomSheetFragment : BottomSheetDialogFragment() {
 
         saveButton.setOnClickListener {
             SharedPreferencesWrapper.getInstance().baseUrl = textInputView.text
+            Toast.makeText(context, getString(R.string.restart_app), Toast.LENGTH_LONG).show()
             dismiss()
         }
 
