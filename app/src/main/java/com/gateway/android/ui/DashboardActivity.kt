@@ -98,6 +98,8 @@ class DashboardActivity : AppCompatActivity(), SharedPreferencesWrapper.Listener
 
             tvSentMessageCount.text =
                 SharedPreferencesWrapper.getInstance().sentMessageCount.toString()
+            tvFailedMessageCount.text =
+                SharedPreferencesWrapper.getInstance().failedMessageCount.toString()
             tvReceivedMessageCount.text =
                 SharedPreferencesWrapper.getInstance().receivedMessageCount.toString()
         }

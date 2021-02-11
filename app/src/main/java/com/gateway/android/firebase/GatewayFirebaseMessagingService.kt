@@ -42,7 +42,8 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
                             SharedPreferencesWrapper.getInstance().sentMessageCount = SharedPreferencesWrapper.getInstance().sentMessageCount!! + 1
                         }
                         else -> {
-                            //TODO Send error to server
+                            SharedPreferencesWrapper.getInstance().failedMessageCount =
+                                SharedPreferencesWrapper.getInstance().failedMessageCount!! + 1
                         }
                     }
                 }

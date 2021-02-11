@@ -43,6 +43,15 @@ class SharedPreferencesWrapper() {
             }
         }
 
+    var failedMessageCount: Int?
+        get() = mSharedPreferences.getInt(KEY_FAILED_MESSAGE_COUNT, 0)
+        set(count) {
+            if (count != null) {
+                mSharedPreferences.edit().putInt(KEY_FAILED_MESSAGE_COUNT, count).apply()
+                mListener?.onSharedPreferencesValueChange()
+            }
+        }
+
     var receivedMessageCount: Int?
         get() = mSharedPreferences.getInt(KEY_RECEIVED_MESSAGE_COUNT, 0)
         set(count) {
@@ -77,6 +86,7 @@ class SharedPreferencesWrapper() {
         private const val KEY_BASE_URL = "baseUrl"
         private const val KEY_DEVICE_TOKEN = "deviceToken"
         private const val KEY_SENT_MESSAGE_COUNT = "sentMessageCount"
+        private const val KEY_FAILED_MESSAGE_COUNT = "failedMessageCount"
         private const val KEY_RECEIVED_MESSAGE_COUNT = "receivedMessageCount"
         private const val KEY_SIM_STATE = "simState"
         private const val KEY_NETWORK_STATE = "networkState"
