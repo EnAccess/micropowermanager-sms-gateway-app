@@ -96,12 +96,15 @@ class DashboardActivity : AppCompatActivity(), SharedPreferencesWrapper.Listener
                 ) else ContextCompat.getDrawable(this, R.drawable.sim_inactive)
             )
 
+            val sharedPreferences = SharedPreferencesWrapper.getInstance()
             tvSentMessageCount.text =
-                SharedPreferencesWrapper.getInstance().sentMessageCount.toString()
+                sharedPreferences.sentMessageCount.toString()
             tvFailedMessageCount.text =
-                SharedPreferencesWrapper.getInstance().failedMessageCount.toString()
+                sharedPreferences.failedMessageCount.toString()
             tvReceivedMessageCount.text =
-                SharedPreferencesWrapper.getInstance().receivedMessageCount.toString()
+                sharedPreferences.receivedMessageCount.toString()
+            tvReceivedNotificationCount.text =
+                sharedPreferences.receivedNotificationCount.toString()
         }
     }
 

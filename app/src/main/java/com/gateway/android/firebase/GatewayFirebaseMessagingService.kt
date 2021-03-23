@@ -15,8 +15,10 @@ import android.app.PendingIntent
 class GatewayFirebaseMessagingService : FirebaseMessagingService() {
 
     private var isReceiverRegistered = false
+    private val sharedPreferences = SharedPreferencesWrapper.getInstance()
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        this.incrementNotification()
         if (!isReceiverRegistered) {
             registerReceiver(object : BroadcastReceiver() {
                 override fun onReceive(context: Context?, intent: Intent?) {
@@ -28,7 +30,6 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
                         SmsManager.RESULT_ERROR_RADIO_OFF -> "RESULT_ERROR_RADIO_OFF"
                         else -> "Some other error occurred while sending"
                     }
-
                     val errorCode = intent?.getIntExtra("errorCode", -1)
 
                     //TODO Send error to server
@@ -39,11 +40,10 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
                 override fun onReceive(context: Context?, intent: Intent?) {
                     when (resultCode) {
                         Activity.RESULT_OK -> {
-                            SharedPreferencesWrapper.getInstance().sentMessageCount = SharedPreferencesWrapper.getInstance().sentMessageCount!! + 1
+                            sharedPreferences.sentMessageCount = sharedPreferences.sentMessageCount!! + 1
                         }
                         else -> {
-                            SharedPreferencesWrapper.getInstance().failedMessageCount =
-                                SharedPreferencesWrapper.getInstance().failedMessageCount!! + 1
+                            sharedPreferences.failedMessageCount = sharedPreferences.failedMessageCount!! + 1
                         }
                     }
                 }
@@ -55,7 +55,7 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
         val number = remoteMessage.data[KEY_NOTIFICATION_EXTRA_NUMBER]
         val message = remoteMessage.data[KEY_NOTIFICATION_EXTRA_MESSAGE]
 
-        if (SharedPreferencesWrapper.getInstance().simState == TelephonyManager.SIM_STATE_READY) {
+        if (sharedPreferences.simState == TelephonyManager.SIM_STATE_READY) {
             try {
                 val sentIntent = PendingIntent.getBroadcast(this, 0, Intent(SMS_SENT), 0)
                 val deliveryIntent = PendingIntent.getBroadcast(this, 0, Intent(SMS_DELIVERED), 0)
@@ -69,16 +69,18 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
+    private fun incrementNotification() {
+        sharedPreferences.receivedNotificationCount = sharedPreferences.receivedNotificationCount!! + 1
+    }
+
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
-
-        SharedPreferencesWrapper.getInstance().deviceToken = p0
+        sharedPreferences.deviceToken = p0
     }
 
     companion object {
         private const val KEY_NOTIFICATION_EXTRA_NUMBER = "number"
         private const val KEY_NOTIFICATION_EXTRA_MESSAGE = "message"
-
         private const val SMS_SENT = "SMS_SENT"
         private const val SMS_DELIVERED = "SMS_DELIVERED"
     }

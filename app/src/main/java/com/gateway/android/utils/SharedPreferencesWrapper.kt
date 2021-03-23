@@ -61,6 +61,15 @@ class SharedPreferencesWrapper() {
             }
         }
 
+    var receivedNotificationCount: Int?
+        get() = mSharedPreferences.getInt(KEY_RECEIVED_NOTIFICATION_COUNT, 0)
+        set(count) {
+            if (count != null) {
+                mSharedPreferences.edit().putInt(KEY_RECEIVED_NOTIFICATION_COUNT, count).apply()
+                mListener?.onSharedPreferencesValueChange()
+            }
+        }
+
     var simState: Int?
         get() = mSharedPreferences.getInt(KEY_SIM_STATE, TelephonyManager.SIM_STATE_READY)
         set(state) {
@@ -88,6 +97,7 @@ class SharedPreferencesWrapper() {
         private const val KEY_SENT_MESSAGE_COUNT = "sentMessageCount"
         private const val KEY_FAILED_MESSAGE_COUNT = "failedMessageCount"
         private const val KEY_RECEIVED_MESSAGE_COUNT = "receivedMessageCount"
+        private const val KEY_RECEIVED_NOTIFICATION_COUNT = "receivedNotificationCount"
         private const val KEY_SIM_STATE = "simState"
         private const val KEY_NETWORK_STATE = "networkState"
 
