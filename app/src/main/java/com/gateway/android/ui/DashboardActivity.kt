@@ -16,6 +16,7 @@ import com.gateway.android.utils.SharedPreferencesWrapper
 import com.gateway.android.utils.Util
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
+
 class DashboardActivity : AppCompatActivity(), SharedPreferencesWrapper.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,8 +47,13 @@ class DashboardActivity : AppCompatActivity(), SharedPreferencesWrapper.Listener
 
         tvContactDetail.text = Html.fromHtml(getString(R.string.contact_detail))
 
-        cvContact.setOnClickListener {
+
+        tvContactDetail.setOnClickListener {
             Util.sendEmail(this)
+        }
+
+        copyTokenButton.setOnClickListener {
+            Util.copyDeviceToken(this)
         }
     }
 
