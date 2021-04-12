@@ -89,7 +89,7 @@ class SharedPreferencesWrapper() {
         }
 
     companion object {
-        const val DEFAULT_BASE_URL = "http://demo.micropowermanager.com/api/"
+        const val DEFAULT_BASE_URL = "https://demo.micropowermanager.com/api/"
 
         private const val SHARED_PREFERENCES_NAME = "inensus-gateway"
         private const val KEY_BASE_URL = "baseUrl"
