@@ -1,5 +1,7 @@
 package com.gateway.android.utils
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
@@ -8,6 +10,8 @@ import android.net.NetworkRequest
 import android.net.Uri
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import com.gateway.android.BuildConfig
 
 
@@ -33,11 +37,25 @@ class Util {
             )
         }
 
+        fun copyDeviceToken(context: Context) {
+            val clipboard =
+                getSystemService(context, ClipboardManager::class.java) as ClipboardManager
+            val deviceToken = "Android Version: " + Build.VERSION.RELEASE + "\n" +
+                    "Android Api Level: " + Build.VERSION.SDK_INT + "\n" +
+                    "Device: " + Build.MANUFACTURER + " " + Build.MODEL + "\n" +
+                    "Application Version: " + BuildConfig.VERSION_NAME + "\n" +
+                    "Device Token: " + SharedPreferencesWrapper.getInstance().deviceToken
+
+            val clip = ClipData.newPlainText("Device Token", deviceToken)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(context, "Copied to Clipboard", Toast.LENGTH_SHORT).show()
+        }
+
         fun sendEmail(context: Context) {
             val emailIntent = Intent(Intent.ACTION_SENDTO)
             emailIntent.data = Uri.parse("mailto:")
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("support@codeaven.com"))
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Codeaven Support")
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("ako@inensus.com"))
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Support")
             emailIntent.putExtra(
                 Intent.EXTRA_TEXT,
                 "Android Version: " + Build.VERSION.RELEASE + "\n" +
