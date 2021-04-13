@@ -8,9 +8,8 @@ import retrofit2.http.*
 interface ApiService {
 
     @POST("sms")
-    //sendReceivedSmsToServer
-    fun sendSms(@Body sms: Sms): Call<ResponseBody>
+    fun sendReceivedSmsToServer(@Body sms: Sms): Call<ResponseBody>
 
     @GET("sms/{uuid}/confirm")
-    fun smsCallback(@Path("uuid") uuid:String): Call<ResponseBody>
+    fun smsCallback(@Path("uuid") uuid: String?): Call<ResponseBody>
 }

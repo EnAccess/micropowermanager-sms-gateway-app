@@ -24,40 +24,24 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
 
     private var isReceiverRegistered = false
     private val sharedPreferences = SharedPreferencesWrapper.getInstance()
-    private var mApiService = RetrofitClient.getInstance()
-        .retrofit.create(ApiService::class.java)
+    private var mApiService = RetrofitClient.getInstance().retrofit.create(ApiService::class.java)
+
+    private lateinit var smsId: String
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        val number = remoteMessage.data[KEY_NOTIFICATION_EXTRA_NUMBER]
+        val message = remoteMessage.data[KEY_NOTIFICATION_EXTRA_MESSAGE]
+        smsId = remoteMessage.data[KEY_NOTIFICATION_EXTRA_SMS_ID] ?: ""
+
         this.incrementNotification()
+
         if (!isReceiverRegistered) {
-            registerReceiver(object : BroadcastReceiver() {
-                override fun onReceive(context: Context?, intent: Intent?) {
-                    val message: String = when (resultCode) {
-                        Activity.RESULT_OK -> "SMS sent successfully"
-                        SmsManager.RESULT_ERROR_GENERIC_FAILURE -> "RESULT_ERROR_GENERIC_FAILURE"
-                        SmsManager.RESULT_ERROR_NO_SERVICE -> "RESULT_ERROR_NO_SERVICE"
-                        SmsManager.RESULT_ERROR_NULL_PDU -> "RESULT_ERROR_NULL_PDU"
-                        SmsManager.RESULT_ERROR_RADIO_OFF -> "RESULT_ERROR_RADIO_OFF"
-                        else -> "Some other error occurred while sending"
-                    }
-                    val errorCode = intent?.getIntExtra("errorCode", -1)
-
-                    //TODO Send error to server
-                }
-            }, IntentFilter(SMS_SENT))
-
             registerReceiver(object : BroadcastReceiver() {
                 override fun onReceive(context: Context?, intent: Intent?) {
                     when (resultCode) {
                         Activity.RESULT_OK -> {
                             sharedPreferences.sentMessageCount = sharedPreferences.sentMessageCount!! + 1
-                            mApiService.smsCallback(uuid=remoteMessage.data["sms_id"].toString()).enqueue(object: Callback<ResponseBody> {
-                                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                                    Toast.makeText(context, "failed", Toast.LENGTH_SHORT).show()
-                                }
-                                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                                    Toast.makeText(context, "message sent success", Toast.LENGTH_SHORT).show()                                }
-                            })
+                            confirmSms()
                         }
                         else -> {
                             sharedPreferences.failedMessageCount = sharedPreferences.failedMessageCount!! + 1
@@ -68,9 +52,6 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
 
             isReceiverRegistered = true
         }
-
-        val number = remoteMessage.data[KEY_NOTIFICATION_EXTRA_NUMBER]
-        val message = remoteMessage.data[KEY_NOTIFICATION_EXTRA_MESSAGE]
 
         if (sharedPreferences.simState == TelephonyManager.SIM_STATE_READY) {
             try {
@@ -90,6 +71,20 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
         sharedPreferences.receivedNotificationCount = sharedPreferences.receivedNotificationCount!! + 1
     }
 
+    private fun confirmSms() {
+        if (smsId.isNotEmpty()) {
+            mApiService.smsCallback(smsId).enqueue(object : Callback<ResponseBody> {
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e("Sms confirm", "Sms with Id:$smsId confirmation failed")
+                }
+
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    Log.d("Sms confirm", "Sms with Id:$smsId has been confirmed")
+                }
+            })
+        }
+    }
+
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
         sharedPreferences.deviceToken = p0
@@ -98,6 +93,7 @@ class GatewayFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
         private const val KEY_NOTIFICATION_EXTRA_NUMBER = "number"
         private const val KEY_NOTIFICATION_EXTRA_MESSAGE = "message"
+        private const val KEY_NOTIFICATION_EXTRA_SMS_ID = "sms_id"
         private const val SMS_SENT = "SMS_SENT"
         private const val SMS_DELIVERED = "SMS_DELIVERED"
     }
