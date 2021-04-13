@@ -294,6 +294,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="10dp"
                     android:drawableTint="@color/colorAccent"
+                    android:drawablePadding="4dp"
                     android:letterSpacing="0.01"
                     android:text="@string/copy_token_button"
                     android:textAllCaps="false"
