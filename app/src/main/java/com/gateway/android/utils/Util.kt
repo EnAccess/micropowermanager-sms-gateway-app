@@ -16,6 +16,7 @@ import com.gateway.android.BuildConfig
 
 
 class Util {
+
     companion object {
 
         fun checkConnectivity(context: Context) {
@@ -50,7 +51,21 @@ class Util {
             clipboard.setPrimaryClip(clip)
             Toast.makeText(context, "Copied to Clipboard", Toast.LENGTH_SHORT).show()
         }
+        fun copyCounters(context: Context) {
+            val clipboard =
+                getSystemService(context, ClipboardManager::class.java) as ClipboardManager
+            val sharedPreferences = SharedPreferencesWrapper.getInstance()
+            val counters = "failedMessage Count: " + sharedPreferences.failedMessageCount+ "\n" +
+                    "receivedMessage Count : " + sharedPreferences.receivedMessageCount + "\n" +
+                    "receivedNotification Count: " + sharedPreferences.receivedNotificationCount + "\n" +
+                    "catch Count: " + sharedPreferences.catchCount + "\n" +
+                    "else Count: " + sharedPreferences.elseCount + "\n" +
+                    "sentMessage Count: " + sharedPreferences.sentMessageCount
 
+            val clip = ClipData.newPlainText("Device Token", counters)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(context, "Copied to Counter", Toast.LENGTH_SHORT).show()
+        }
         fun sendEmail(context: Context) {
             val emailIntent = Intent(Intent.ACTION_SENDTO)
             emailIntent.data = Uri.parse("mailto:")

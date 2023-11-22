@@ -55,6 +55,9 @@ class DashboardActivity : AppCompatActivity(), SharedPreferencesWrapper.Listener
         copyTokenButton.setOnClickListener {
             Util.copyDeviceToken(this)
         }
+        copyCountersButton.setOnClickListener {
+            Util.copyCounters(this)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

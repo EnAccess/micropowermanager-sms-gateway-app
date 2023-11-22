@@ -251,7 +251,35 @@
                 android:clipToPadding="false"
                 android:orientation="vertical">
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#DDDDDD" />
 
+                <Button
+                    android:id="@+id/copyTokenButton"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:drawableTint="@color/colorAccent"
+                    android:drawablePadding="4dp"
+                    android:letterSpacing="0.01"
+                    android:text="@string/copy_token_button"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_content_copy" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#DDDDDD" />
                 <TextView
                     android:id="@+id/tvContactTitle"
                     android:layout_width="wrap_content"
@@ -278,6 +306,7 @@
                     android:textColor="#333333"
                     android:textSize="14sp" />
 
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.7dp"
@@ -285,9 +314,8 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
                     android:background="#DDDDDD" />
-
                 <Button
-                    android:id="@+id/copyTokenButton"
+                    android:id="@+id/copyCountersButton"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -296,11 +324,10 @@
                     android:drawableTint="@color/colorAccent"
                     android:drawablePadding="4dp"
                     android:letterSpacing="0.01"
-                    android:text="@string/copy_token_button"
+                    android:text="@string/copy_counters_button"
                     android:textAllCaps="false"
                     android:textSize="16sp"
                     app:drawableStartCompat="@drawable/ic_content_copy" />
-
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

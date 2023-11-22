@@ -10,6 +10,6 @@ interface ApiService {
     @POST("sms")
     fun sendReceivedSmsToServer(@Body sms: Sms): Call<ResponseBody>
 
-    @GET("sms/{uuid}/confirm")
-    fun smsCallback(@Path("uuid") uuid: String?): Call<ResponseBody>
+    @GET("{callback}")
+    fun smsCallback(@Path("callback") callback: String?): Call<ResponseBody>
 }

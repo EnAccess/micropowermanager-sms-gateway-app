@@ -4,6 +4,8 @@
         telecommunications network. \n\n Version: %1$s"
     </string>
     <string name="message_sent">Message Delivered</string>
+    <string name="catch_count">Catch Count</string>
+    <string name="else_count">Else Count</string>
     <string name="message_failed">Message Failed</string>
     <string name="message_received">"Message Received"</string>
     <string name="contact">"Contact Us"</string>
@@ -16,4 +18,5 @@
     <string name="restart_app">"Restart Application for the changes to be applied."</string>
     <string name="notification_received">"Notif. Received"</string>
     <string name="copy_token_button">Copy Device Token</string>
+    <string name="copy_counters_button">Copy Counters</string>
 </resources>

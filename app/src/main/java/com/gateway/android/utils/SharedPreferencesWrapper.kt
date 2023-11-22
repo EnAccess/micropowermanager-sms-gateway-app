@@ -42,6 +42,22 @@ class SharedPreferencesWrapper() {
                 mListener?.onSharedPreferencesValueChange()
             }
         }
+    var elseCount: Int?
+        get() = mSharedPreferences.getInt(KEY_ELSE_COUNT, 0)
+        set(count) {
+            if (count != null) {
+                mSharedPreferences.edit().putInt(KEY_ELSE_COUNT, count).apply()
+                mListener?.onSharedPreferencesValueChange()
+            }
+        }
+    var catchCount: Int?
+        get() = mSharedPreferences.getInt(KEY_CATCH_COUNT, 0)
+        set(count) {
+            if (count != null) {
+                mSharedPreferences.edit().putInt(KEY_CATCH_COUNT, count).apply()
+                mListener?.onSharedPreferencesValueChange()
+            }
+        }
 
     var failedMessageCount: Int?
         get() = mSharedPreferences.getInt(KEY_FAILED_MESSAGE_COUNT, 0)
@@ -89,12 +105,14 @@ class SharedPreferencesWrapper() {
         }
 
     companion object {
-        const val DEFAULT_BASE_URL = "https://demo.micropowermanager.com/api/"
+        const val DEFAULT_BASE_URL = "https://cloud.micropowermanager.com/api/"
 
         private const val SHARED_PREFERENCES_NAME = "inensus-gateway"
         private const val KEY_BASE_URL = "baseUrl"
         private const val KEY_DEVICE_TOKEN = "deviceToken"
         private const val KEY_SENT_MESSAGE_COUNT = "sentMessageCount"
+        private const val KEY_ELSE_COUNT = "elseCount"
+        private const val KEY_CATCH_COUNT = "catchCount"
         private const val KEY_FAILED_MESSAGE_COUNT = "failedMessageCount"
         private const val KEY_RECEIVED_MESSAGE_COUNT = "receivedMessageCount"
         private const val KEY_RECEIVED_NOTIFICATION_COUNT = "receivedNotificationCount"
