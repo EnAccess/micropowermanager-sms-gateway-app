@@ -1,3 +1,24 @@
+# ⚠️ IMPORTANT NOTE
+
+This is repository is **deprecated**.
+Please refer to [MicroPowerManager documentation](https://micropowermanager.io/) for instructions on how to use MicroPowerManager.
+
+**Background:**
+
+The MicroPowerManager SMS Gateway App was to enable SMS-sending from and to the MicroPowerManager website interface as well as to be able to send SMS to your customer portfolio through the same website.
+
+For this feature to work, the SMS Gateway App must be installed on the applicable mobile phone.
+
+This app has created issues with service providers in the past.
+Additionally, the privacy settings and new features of Android may interfere/block the proper functioning of this app.
+
+**Further information:**
+
+- <https://enaccess.org/materials/micropowermanager/>
+- <https://micropowermanager.io/>
+
+---
+
 # SMS Gateway
 
 A bidirectional SMS communication Android application that enables seamless SMS handling and integration with Firebase Cloud Messaging.
@@ -5,6 +26,7 @@ A bidirectional SMS communication Android application that enables seamless SMS 
 ## Overview
 
 SMS Gateway is an Android application that facilitates bidirectional SMS communication between mobile devices and a server. The app can:
+
 - Receive and process incoming SMS messages
 - Send SMS messages based on Firebase Cloud Messaging (FCM) requests
 - Monitor SIM card state changes
@@ -35,6 +57,7 @@ SMS Gateway is an Android application that facilitates bidirectional SMS communi
 ### Permissions
 
 The application requires the following permissions:
+
 - `INTERNET`: For network communication
 - `SEND_SMS`: To send SMS messages
 - `RECEIVE_SMS`: To receive SMS messages
@@ -56,6 +79,7 @@ The application requires the following permissions:
 4. Build the project
 
 ## Architecture
+
 - Firebase Cloud Messaging Service for push notifications
 - Broadcast Receivers for SMS and SIM state monitoring
 - Dashboard Activity for user interface
